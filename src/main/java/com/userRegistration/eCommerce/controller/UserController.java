@@ -41,13 +41,13 @@ public class UserController {
         return "This url is only for users";
     }
 
-    @GetMapping("/getAllUsers")
-    public List<User> getAllUsersByRole() {
-        return userService.getAllUsersByRole();
-    }
-
-//    @DeleteMapping({"/deleteUserDetails/{userName}"})
-//    public void deleteUserDetails(@PathVariable("userName")String userName){
-//        userService.deleteUserDetails(userName);
+//    @GetMapping("/getAllUsers")
+//    public List<User> getAllUsersByRole() {
+//        return userService.getAllUsersByRole();
 //    }
+//
+////    @DeleteMapping({"/deleteUserDetails/{userName}"})
+////    public void deleteUserDetails(@PathVariable("userName")String userName){
+////        userService.deleteUserDetails(userName);
+////    }
 }

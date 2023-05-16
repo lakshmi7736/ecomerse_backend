@@ -86,11 +86,6 @@ public class UserService {
         userDao.save(user);
     }
 
-    public List<User> getAllUsersByRole() {
-        Role userRole = roleDao.findByRoleName("User");
-        return userDao.findByRole(userRole);
-    }
-
 
 
     public String getEncodedPassword(String password){
@@ -98,16 +93,4 @@ public class UserService {
     }
 
 
-//    public void deleteUserDetails(String userName) {
-//        User user = userDao.findById(userName).orElse(null);
-//        if (user != null) {
-//            Set<Role> roles = user.getRole();
-//            for (Role role : roles) {
-//                role.getUsers().remove(user);
-//            }
-//            user.setRole(null);
-//            userDao.save(user); // Update the user to remove role associations
-//            userDao.deleteById(userName); // Delete the user
-//        }
-//    }
 }
