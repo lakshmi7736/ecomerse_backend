@@ -22,6 +22,14 @@ public class User {
     })
     private Set<Role> role;
 
+    public User(){
+
+    }
+
+    public User(String userName) {
+        this.userName = userName;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -61,4 +69,5 @@ public class User {
     public void setRole(Set<Role> role) {
         this.role = role;
     }
+
 }

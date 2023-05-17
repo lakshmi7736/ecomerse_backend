@@ -38,11 +38,21 @@ private PasswordEncoder passwordEncoder;
         return userDao.findByRole(userRole);
     }
 
-
-
     public String getEncodedPassword(String password){
         return passwordEncoder.encode(password);
     }
 
+
+    public void deleteUser(String userName) {
+        userDao.delete(new User(userName));
+    }
+
+    public User updateUser(User user){
+       String username= user.getUserName();
+       User sr=userDao.findById(username).get();
+       sr.setUserFirstName(user.getUserFirstName());
+       sr.setUserLastName(user.getUserLastName());
+        return userDao.save(sr);
+    }
 
 }

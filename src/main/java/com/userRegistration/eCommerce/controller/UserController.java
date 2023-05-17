@@ -24,10 +24,7 @@ public class UserController {
        return userService.registerNewUser(user);
     }
 
-    @PostMapping({"/registerNewAdmin"})
-    public User registerNewAdmin(@RequestBody User admin){
-        return userService.registerNewAdmin(admin);
-    }
+
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
     public String forAdmin(){
@@ -41,13 +38,4 @@ public class UserController {
         return "This url is only for users";
     }
 
-//    @GetMapping("/getAllUsers")
-//    public List<User> getAllUsersByRole() {
-//        return userService.getAllUsersByRole();
-//    }
-//
-////    @DeleteMapping({"/deleteUserDetails/{userName}"})
-////    public void deleteUserDetails(@PathVariable("userName")String userName){
-////        userService.deleteUserDetails(userName);
-////    }
 }
