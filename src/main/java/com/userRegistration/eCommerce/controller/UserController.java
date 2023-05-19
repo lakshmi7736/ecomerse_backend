@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -18,10 +17,28 @@ public class UserController {
         userService.initRolesAndUsers();
     }
 
+    @PostMapping("/registerNewUser")
+    public User registerNewUser(@RequestBody User user) {
+        String email = user.getGmail();
+        String phoneNumber = user.getPhoneNumber();
 
-        @PostMapping({"/registerNewUser"})
-     public User registerNewUser(@RequestBody User user){
-       return userService.registerNewUser(user);
+        if (!userService.isValidEmail(email)) {
+            // Email is not valid
+            throw new IllegalArgumentException("Invalid email address.");
+        }
+
+        if (userService.isExistingEmail(email)) {
+            // Email already exists
+            throw new IllegalArgumentException("Email address already exists.");
+        }
+
+        if (!userService.isValidPhoneNumber(phoneNumber)) {
+            // Phone number is not valid
+            throw new IllegalArgumentException("Invalid phone number.");
+        }
+
+        // All conditions are satisfied, proceed with user registration
+        return userService.registerNewUser(user);
     }
 
 

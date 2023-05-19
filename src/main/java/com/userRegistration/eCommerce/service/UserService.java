@@ -7,10 +7,14 @@ import com.userRegistration.eCommerce.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 
 import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -23,19 +27,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-
-        public User registerNewAdmin(User admin){
-
-       Role role= roleDao.findById("Admin").get();
-       Set<Role> roleSet =new HashSet<>();
-       roleSet.add(role);
-
-       admin.setRole(roleSet);
-       String password=getEncodedPassword(admin.getUserPassword());
-       admin.setUserPassword(password);
-       return userDao.save(admin);
-    }
-
     public User registerNewUser(User user){
 
         Role role= roleDao.findById("User").get();
@@ -47,8 +38,6 @@ public class UserService {
         user.setUserPassword(password);
         return userDao.save(user);
     }
-
-
 
 
     public void initRolesAndUsers(){
@@ -69,6 +58,8 @@ public class UserService {
         adminUser.setUserFirstName("admin");
         adminUser.setUserLastName("admin");
         adminUser.setUserPassword(getEncodedPassword("admin.og@123"));
+        adminUser.setGmail("admin.og@gmail.com");
+        adminUser.setPhoneNumber("8075842670");
         Set<Role> adminRoles=new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -79,7 +70,9 @@ public class UserService {
         user.setUserName("lakshmi");
         user.setUserFirstName("lakshmi");
         user.setUserLastName("mi");
-        user.setUserPassword(getEncodedPassword("1122"));
+        user.setGmail("lakshmilaksh7736@gmail.com");
+        user.setPhoneNumber("7736225705");
+        user.setUserPassword(getEncodedPassword("111222"));
         Set<Role> userRoles=new HashSet<>();
         userRoles.add(userRole);
         user.setRole(userRoles);
@@ -93,4 +86,32 @@ public class UserService {
     }
 
 
+    public boolean isExistingEmail(String email){
+        // Check if email already exists
+        return userDao.existsByGmail(email);
+    }
+
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        if (StringUtils.isEmpty(phoneNumber)) {
+            return false;
+        }
+        String phoneRegex = "^[6-9]\\d{9}$";
+        return Pattern.matches(phoneRegex, phoneNumber);
+    }
+
+
+    public boolean isValidEmail(String email) {
+        // Define the pattern to match a valid email address
+        String emailRegex = "^[\\w\\.-]+@gmail\\.com$";
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // Match the given email address with the pattern
+        Matcher matcher = pattern.matcher(email);
+
+        // Return true if the email address matches the pattern, false otherwise
+        return matcher.matches();
+    }
+
 }
+
+

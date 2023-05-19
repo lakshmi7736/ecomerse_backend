@@ -10,6 +10,8 @@ public class User {
     private String userName;
     private String userFirstName;
     private String userLastName;
+    private String gmail;
+    private String phoneNumber;
     private String userPassword;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -26,9 +28,26 @@ public class User {
 
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public User(String userName) {
         this.userName = userName;
     }
+
+    public String getGmail() {
+        return gmail;
+    }
+
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
+    }
+
 
     public String getUserName() {
         return userName;
