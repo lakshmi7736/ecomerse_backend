@@ -20,7 +20,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-//    @PreAuthorize("hasRole('Admin)")
+    @PreAuthorize("hasRole('Admin')")
     @PostMapping(value = {"/addNewProduct"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Product addNewProduct(@RequestPart("product") Product product,
                                  @RequestPart ("imageFile")MultipartFile[] file){
@@ -48,14 +48,20 @@ public class ProductController {
         }
         return imageModels;
     }
-
-    @GetMapping("/getAllProducts")
+    @PreAuthorize("hasRole('Admin')")
+    @GetMapping({"/getAllProducts"})
     public List<Product> getAllProducts() {
 
         return productService.getAllProducts();
     }
+    @PreAuthorize("hasRole('Admin')")
     @DeleteMapping({"/deleteProductDetails/{productId}"})
       public void deleteProductDetails(@PathVariable("productId")Integer productId){
             productService.deleteProductDetails(productId);
+        }
+    @PreAuthorize("hasRole('Admin')")
+        @GetMapping({"/getProductDetailsById/{productId}"})
+        public Product getProductDetailsById(@PathVariable("productId") Integer productId){
+          return  productService.getProductDetailsById(productId);
         }
 }

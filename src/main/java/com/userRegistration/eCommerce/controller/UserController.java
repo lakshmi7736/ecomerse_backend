@@ -17,6 +17,7 @@ public class UserController {
         userService.initRolesAndUsers();
     }
 
+
     @PostMapping("/registerNewUser")
     public User registerNewUser(@RequestBody User user) {
         String email = user.getGmail();
