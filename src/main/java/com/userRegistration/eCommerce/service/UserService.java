@@ -54,6 +54,7 @@
 
 
             User adminUser = new User();
+            adminUser.setUserId(1L);
             adminUser.setUserName("admin@123");
             adminUser.setUserFirstName("admin");
             adminUser.setUserLastName("admin");
@@ -67,6 +68,7 @@
 
 
             User user = new User();
+            user.setUserId(2L);
             user.setUserName("lakshmi");
             user.setUserFirstName("lakshmi");
             user.setUserLastName("mi");

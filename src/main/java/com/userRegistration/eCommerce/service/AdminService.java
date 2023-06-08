@@ -67,9 +67,8 @@ private PasswordEncoder passwordEncoder;
     }
 
 
-    public void deleteUser(String userName) {
-        userDao.delete(new User(userName));
-    }
+    public void deleteUser(Long userId) { userDao.deleteById(userId); }
+
 
     public User updateUser(User user){
 
@@ -80,8 +79,9 @@ private PasswordEncoder passwordEncoder;
         if (!isValidPhoneNumber(user.getPhoneNumber())) {
             throw new IllegalArgumentException("Invalid phone number");
         }
-        String username= user.getUserName();
-       User sr=userDao.findById(username).get();
+        Long userId= user.getUserId();
+       User sr=userDao.findById(userId).get();
+       sr.setUserName(user.getUserName());
        sr.setUserFirstName(user.getUserFirstName());
        sr.setUserLastName(user.getUserLastName());
        sr.setGmail(user.getGmail());

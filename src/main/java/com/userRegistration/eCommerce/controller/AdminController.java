@@ -74,9 +74,9 @@ public class AdminController {
     public List<User> getUsers(){
         return adminService.getUsers();
     }
-    @DeleteMapping("/deleteUser/{userName}")
-    public void deleteUser(@PathVariable("userName") String userName) {
-        adminService.deleteUser(userName);
+    @DeleteMapping("/deleteUser/{userId}")
+    public void deleteUser(@PathVariable("userId") Long userId) {
+        adminService.deleteUser(userId);
     }
     @PutMapping({"/updateUser"})
     public User updateUser(@RequestBody User user){

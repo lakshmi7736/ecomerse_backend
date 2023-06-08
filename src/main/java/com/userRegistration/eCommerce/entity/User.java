@@ -7,6 +7,8 @@ import java.util.Set;
 @Entity
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
     private String userName;
     private String userFirstName;
     private String userLastName;
@@ -14,18 +16,28 @@ public class User {
     private String phoneNumber;
     private String userPassword;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",
-    joinColumns = {
-            @JoinColumn(name = "USER_ID")
-    },
-    inverseJoinColumns = {
-            @JoinColumn(name = "ROlE_ID")
-    })
+            joinColumns = {
+                    @JoinColumn(name = "USER_ID")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ROlE_ID")
+            })
     private Set<Role> role;
 
     public User(){
 
+    }
+
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getPhoneNumber() {
