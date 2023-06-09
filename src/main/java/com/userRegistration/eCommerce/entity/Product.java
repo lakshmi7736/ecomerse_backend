@@ -11,6 +11,8 @@ public class Product {
     private String productName;
     @Column(length = 2000)
     private String productDescription;
+    private String category;
+    private int quantity;
     private Double productDiscountedPrice;
     private Double productActualPrice;
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -72,6 +74,19 @@ public class Product {
         this.productActualPrice = productActualPrice;
     }
 
+    public String getCategory() {
+        return category;
+    }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
