@@ -11,7 +11,9 @@ public class Product {
     private String productName;
     @Column(length = 2000)
     private String productDescription;
-    private String category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
     private int quantity;
     private Double productDiscountedPrice;
     private Double productActualPrice;
@@ -74,13 +76,6 @@ public class Product {
         this.productActualPrice = productActualPrice;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -88,5 +83,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
