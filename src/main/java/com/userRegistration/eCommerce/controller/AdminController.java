@@ -1,5 +1,6 @@
 package com.userRegistration.eCommerce.controller;
 
+import com.userRegistration.eCommerce.Exception.ResourceNotFoundException;
 import com.userRegistration.eCommerce.dao.UserDao;
 import com.userRegistration.eCommerce.entity.User;
 import com.userRegistration.eCommerce.service.AdminService;
@@ -7,6 +8,7 @@ import com.userRegistration.eCommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,48 +29,48 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping({"/registerNewAdmin"})
-    public User registerNewAdmin(@RequestBody User admin)
+    public ResponseEntity<User>  registerNewAdmin(@RequestBody User admin)
     {
         String email = admin.getGmail();
         String phoneNumber = admin.getPhoneNumber();
 
         if (!adminService.isValidEmail(email)) {
             // Email is not valid
-            throw new IllegalArgumentException("Invalid email address.");
+            throw new ResourceNotFoundException("Invalid email address.");
         }
 
         if (adminService.isExistingEmail(email)) {
             // Email already exists
-            throw new IllegalArgumentException("Email address already exists.");
+            throw new ResourceNotFoundException("Email address already exists.");
         }
 
         if (!adminService.isValidPhoneNumber(phoneNumber)) {
             // Phone number is not valid
-            throw new IllegalArgumentException("Invalid phone number.");
+            throw new ResourceNotFoundException("Invalid phone number.");
         }
-        return adminService.registerNewAdmin(admin);
+        return new ResponseEntity<User>(adminService.registerNewAdmin(admin), HttpStatus.CREATED)  ;
     }
 
     @PostMapping({"/registerUserByAdmin"})
-    public User registerUserByAdmin(@RequestBody User user){
+    public ResponseEntity<User> registerUserByAdmin(@RequestBody User user){
         String email = user.getGmail();
         String phoneNumber = user.getPhoneNumber();
 
         if (!adminService.isValidEmail(email)) {
             // Email is not valid
-            throw new IllegalArgumentException("Invalid email address.");
+            throw new ResourceNotFoundException("Invalid email address.");
         }
 
         if (adminService.isExistingEmail(email)) {
             // Email already exists
-            throw new IllegalArgumentException("Email address already exists.");
+            throw new ResourceNotFoundException("Email address already exists.");
         }
 
         if (!adminService.isValidPhoneNumber(phoneNumber)) {
             // Phone number is not valid
-            throw new IllegalArgumentException("Invalid phone number.");
+            throw new ResourceNotFoundException("Invalid phone number.");
         }
-       return adminService.registerUser(user);
+       return new ResponseEntity<User>(adminService.registerUser(user),HttpStatus.CREATED);
     }
     @GetMapping({"/getUsers"})
     public List<User> getUsers(){
@@ -79,23 +81,23 @@ public class AdminController {
         adminService.deleteUser(userId);
     }
     @PutMapping({"/updateUser"})
-    public User updateUser(@RequestBody User user){
+    public ResponseEntity<User> updateUser(@RequestBody User user){
         String email = user.getGmail();
         String phoneNumber = user.getPhoneNumber();
 
         if (!adminService.isValidEmail(email)) {
             // Email is not valid
-            throw new IllegalArgumentException("Invalid email address.");
+            throw new ResourceNotFoundException("Invalid email address.");
         }
         if (adminService.isExistingEmailUpdate(email, user.getUserName())) {
             // Existing user with the same email
-            throw new IllegalArgumentException("Email already exists for another user.");
+            throw new ResourceNotFoundException("Email already exists for another user.");
         }
         if (!adminService.isValidPhoneNumber(phoneNumber)) {
             // Phone number is not valid
-            throw new IllegalArgumentException("Invalid phone number.");
+            throw new ResourceNotFoundException("Invalid phone number.");
         }
-      return  adminService.updateUser(user);
+      return new ResponseEntity<User>(adminService.updateUser(user),HttpStatus.CREATED)  ;
     }
 
 }

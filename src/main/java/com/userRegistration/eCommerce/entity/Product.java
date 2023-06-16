@@ -1,6 +1,7 @@
 package com.userRegistration.eCommerce.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,22 +12,30 @@ public class Product {
     private String productName;
     @Column(length = 2000)
     private String productDescription;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "category_products",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
     private int quantity;
     private Double productDiscountedPrice;
     private Double productActualPrice;
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "product_images",
             joinColumns = {
-            @JoinColumn(name = "product_id")
+                    @JoinColumn(name = "product_id")
             },
             inverseJoinColumns = {
-            @JoinColumn(name = "image_id")
+                    @JoinColumn(name = "image_id")
             }
     )
     private Set<ImageModel> productImages;
+
+    public Product() {
+    }
+
 
     public Set<ImageModel> getProductImages() {
         return productImages;
@@ -85,11 +94,11 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Category getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

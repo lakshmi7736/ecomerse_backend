@@ -3,6 +3,8 @@ package com.userRegistration.eCommerce.controller;
 import com.userRegistration.eCommerce.entity.Category;
 import com.userRegistration.eCommerce.service.CategoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +15,11 @@ public class CategoryController {
     @Autowired
     private CategoryServices categoryServices;
 
-
-    @PreAuthorize("hasRole('Admin')")
+//
+//    @PreAuthorize("hasRole('Admin')")
     @PostMapping(value = {"/addNewCategory"})
-    public Category addNewCategory(@RequestBody Category category){
-        return categoryServices.addNewCategory(category);
+    public ResponseEntity<Category> addNewCategory(@RequestBody Category category){
+        return new ResponseEntity<Category>( categoryServices.addNewCategory(category), HttpStatus.CREATED );
     }
 
     @GetMapping({"/getAllCategories"})
@@ -31,7 +33,7 @@ public class CategoryController {
     }
     @PreAuthorize("hasRole('Admin')")
     @GetMapping({"/getCategoryDetailsById/{categoryId}"})
-    public Category getCategoryDetailsById(@PathVariable("categoryId") Long categoryId){
-        return  categoryServices.getCategoryDetailsById(categoryId);
+    public ResponseEntity<Category> getCategoryDetailsById(@PathVariable("categoryId") Long categoryId){
+        return new ResponseEntity<Category>(categoryServices.getCategoryDetailsById(categoryId),HttpStatus.OK) ;
     }
 }

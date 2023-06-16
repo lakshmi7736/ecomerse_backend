@@ -6,7 +6,7 @@ import com.userRegistration.eCommerce.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 @Service
@@ -17,8 +17,8 @@ public class ProductService {
        return productDao.save(product);
     }
 
-    public List<Product> getAllProducts() {
-        return (List<Product>) productDao.findAll();
+    public ArrayList<Product> getAllProducts() {
+        return (ArrayList<Product>) productDao.findAll();
     }
 
     public void deleteProductDetails(Integer productId){

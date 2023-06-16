@@ -1,5 +1,6 @@
 package com.userRegistration.eCommerce.service;
 
+import com.userRegistration.eCommerce.Exception.ResourceNotFoundException;
 import com.userRegistration.eCommerce.dao.RoleDao;
 import com.userRegistration.eCommerce.dao.UserDao;
 import com.userRegistration.eCommerce.entity.Role;
@@ -28,10 +29,11 @@ private PasswordEncoder passwordEncoder;
     public User registerUser(User user) {
         // Validate inputs
         if (!isValidEmail(user.getGmail())) {
-            throw new IllegalArgumentException("Invalid email format");
+            throw new ResourceNotFoundException("Invalid gmail");
         }
+
         if (!isValidPhoneNumber(user.getPhoneNumber())) {
-            throw new IllegalArgumentException("Invalid phone number");
+            throw new ResourceNotFoundException("Invalid phone number");
         }
 
         Role role= roleDao.findById("User").get();
@@ -74,10 +76,10 @@ private PasswordEncoder passwordEncoder;
 
         // Validate inputs
         if (!isValidEmail(user.getGmail())) {
-            throw new IllegalArgumentException("Invalid email format");
+            throw new ResourceNotFoundException("Invalid email format");
         }
         if (!isValidPhoneNumber(user.getPhoneNumber())) {
-            throw new IllegalArgumentException("Invalid phone number");
+            throw new ResourceNotFoundException("Invalid phone number");
         }
         Long userId= user.getUserId();
        User sr=userDao.findById(userId).get();

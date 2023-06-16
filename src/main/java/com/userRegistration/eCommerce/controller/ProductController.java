@@ -1,8 +1,12 @@
 package com.userRegistration.eCommerce.controller;
 
+import com.userRegistration.eCommerce.Exception.ResourceNotFoundException;
+import com.userRegistration.eCommerce.dao.CategoryDao;
+import com.userRegistration.eCommerce.entity.Category;
 import com.userRegistration.eCommerce.entity.ImageModel;
 import com.userRegistration.eCommerce.entity.Product;
 
+import com.userRegistration.eCommerce.service.CategoryServices;
 import com.userRegistration.eCommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,8 +24,13 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-    @PreAuthorize("hasRole('Admin')")
-    @PostMapping(value = {"/addNewProduct"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Autowired
+    private CategoryServices categoryServices;
+    @Autowired
+    private CategoryDao categoryDao;
+
+//    @PreAuthorize("hasRole('Admin')")
+    @PostMapping(value = {"/addNewProduct"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Product addNewProduct(@RequestPart("product") Product product,
                                  @RequestPart ("imageFile")MultipartFile[] file){
         try {
@@ -35,6 +44,7 @@ public class ProductController {
         }
 
     }
+
 
     public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles)throws IOException {
         Set<ImageModel> imageModels=new HashSet<>();
