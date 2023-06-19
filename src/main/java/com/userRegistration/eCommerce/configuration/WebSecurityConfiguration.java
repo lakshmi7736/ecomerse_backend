@@ -37,7 +37,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.cors();
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/authenticate","/registerNewUser","/getAllProducts","/addNewProduct","/addNewCategory").permitAll()
+                .authorizeRequests().antMatchers("/authenticate","/registerNewUser","/getAllProducts","/getProductDetailsById/{productId}","placeOrder").permitAll()
                 .antMatchers(org.springframework.http.HttpHeaders.ALLOW).permitAll()
                 .anyRequest().authenticated()
                 .and()

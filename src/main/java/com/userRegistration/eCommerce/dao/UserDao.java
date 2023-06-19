@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface UserDao extends CrudRepository<User, Long> {
-//    User findByUserName(String userName);
 
     List<User> findByRole(Role role);
     boolean existsByGmail(String gmail);

@@ -12,13 +12,8 @@ public class Product {
     private String productName;
     @Column(length = 2000)
     private String productDescription;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "category_products",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<Category> categories;
+//    @OneToOne
+//    private List<Category> categories;
     private int quantity;
     private Double productDiscountedPrice;
     private Double productActualPrice;
@@ -36,14 +31,6 @@ public class Product {
     public Product() {
     }
 
-
-    public Set<ImageModel> getProductImages() {
-        return productImages;
-    }
-
-    public void setProductImages(Set<ImageModel> productImages) {
-        this.productImages = productImages;
-    }
 
     public Integer getProductId() {
         return productId;
@@ -69,6 +56,14 @@ public class Product {
         this.productDescription = productDescription;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Double getProductDiscountedPrice() {
         return productDiscountedPrice;
     }
@@ -85,20 +80,11 @@ public class Product {
         this.productActualPrice = productActualPrice;
     }
 
-
-    public int getQuantity() {
-        return quantity;
+    public Set<ImageModel> getProductImages() {
+        return productImages;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setProductImages(Set<ImageModel> productImages) {
+        this.productImages = productImages;
     }
 }

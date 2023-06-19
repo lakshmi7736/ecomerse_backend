@@ -1,15 +1,14 @@
 package com.userRegistration.eCommerce.controller;
 
-import com.userRegistration.eCommerce.Exception.ResourceNotFoundException;
-import com.userRegistration.eCommerce.dao.CategoryDao;
-import com.userRegistration.eCommerce.entity.Category;
 import com.userRegistration.eCommerce.entity.ImageModel;
 import com.userRegistration.eCommerce.entity.Product;
 
-import com.userRegistration.eCommerce.service.CategoryServices;
+
 import com.userRegistration.eCommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,19 +23,19 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-    @Autowired
-    private CategoryServices categoryServices;
-    @Autowired
-    private CategoryDao categoryDao;
+//    @Autowired
+//    private CategoryServices categoryServices;
+//    @Autowired
+//    private CategoryDao categoryDao;
 
 //    @PreAuthorize("hasRole('Admin')")
     @PostMapping(value = {"/addNewProduct"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Product addNewProduct(@RequestPart("product") Product product,
-                                 @RequestPart ("imageFile")MultipartFile[] file){
+    public ResponseEntity<Product> addNewProduct(@RequestPart("product") Product product,
+                                                 @RequestPart ("imageFile")MultipartFile[] file){
         try {
             Set<ImageModel> images=uploadImage(file);
             product.setProductImages(images);
-            return productService.addNewProduct(product);
+            return new ResponseEntity<Product>(productService.addNewProduct(product), HttpStatus.CREATED);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -69,7 +68,7 @@ public class ProductController {
       public void deleteProductDetails(@PathVariable("productId")Integer productId){
             productService.deleteProductDetails(productId);
         }
-    @PreAuthorize("hasRole('Admin')")
+
         @GetMapping({"/getProductDetailsById/{productId}"})
         public Product getProductDetailsById(@PathVariable("productId") Integer productId){
           return  productService.getProductDetailsById(productId);

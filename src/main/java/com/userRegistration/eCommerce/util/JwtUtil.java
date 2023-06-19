@@ -18,7 +18,10 @@ public class JwtUtil {
     private static final String SECRET_KEY="my_code";
     public String getUserNameFromToken(String token){
         return getClaimFromToken(token,Claims::getSubject);
+    }
 
+    public String getUserIdFromToken(String token){
+        return getClaimFromToken(token,Claims::getSubject);
     }
     private <T> T getClaimFromToken(String token, Function<Claims,T> claimResolver){
         final Claims claims=getAllClaimsFromToken(token);
