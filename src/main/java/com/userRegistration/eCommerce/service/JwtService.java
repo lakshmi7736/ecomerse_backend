@@ -42,6 +42,18 @@ public class JwtService implements UserDetailsService {
         return new JwtResponse(user, newGeneratedToken);
     }
 
+    public JwtResponse generateToken(JwtRequest jwtRequest) throws Exception {
+        String phoneNumber = jwtRequest.getPhoneNumber();
+        String otp = jwtRequest.getOtp(); // Assuming you have an `otp` field in the `JwtRequest` class
+        otpAuthenticate(phoneNumber, otp);
+        UserDetails userDetails = loadUserByUsername(phoneNumber);
+        String newGeneratedToken = jwtUtil.generateToken(userDetails);
+
+        User user = userDao.findByUserName(phoneNumber);
+        return new JwtResponse(user, newGeneratedToken);
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = userDao.findByUserName(userName);
@@ -74,4 +86,15 @@ public class JwtService implements UserDetailsService {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+
+    private void otpAuthenticate(String phoneNumber, String otp) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phoneNumber, otp));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
 }

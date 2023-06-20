@@ -1,9 +1,11 @@
 package com.userRegistration.eCommerce.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Set;
-
+@Data
 @Entity
 public class User {
     @Id
@@ -15,6 +17,7 @@ public class User {
     private String gmail;
     private String phoneNumber;
     private String userPassword;
+    private String otp;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",
@@ -30,7 +33,13 @@ public class User {
 
     }
 
+    public String getOtp() {
+        return otp;
+    }
 
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 
     public Long getUserId() {
         return userId;

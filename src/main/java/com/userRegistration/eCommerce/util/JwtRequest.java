@@ -4,6 +4,9 @@ public class JwtRequest {
     private String userName;
     private String userPassword;
 
+    private String phoneNumber;
+    private String otp;
+
     public String getUserName() {
         return userName;
     }
@@ -18,5 +21,21 @@ public class JwtRequest {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

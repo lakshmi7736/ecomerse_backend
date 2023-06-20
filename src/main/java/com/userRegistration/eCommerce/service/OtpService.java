@@ -1,64 +1,42 @@
-//package com.userRegistration.eCommerce.service;
-//
-//import com.codingwithtashi.springsecurityjwt.config.TwilioConfig;
-//import com.google.common.cache.CacheBuilder;
-//import com.google.common.cache.CacheLoader;
-//import com.google.common.cache.LoadingCache;
-//import com.twilio.rest.api.v2010.account.Message;
-//import com.twilio.type.PhoneNumber;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.text.DecimalFormat;
-//import java.util.Random;
-//import java.util.concurrent.TimeUnit;
-//
-//@Service
-//public class OtpService {
-//    private static final  Integer EXPIRE_MIN = 5;
-//    private LoadingCache<String,String> otpCache;
-//    @Autowired
-//    private TwilioConfig twilioConfig;
-//
-//    public OtpService() {
-//        otpCache = CacheBuilder.newBuilder()
-//                .expireAfterWrite(EXPIRE_MIN, TimeUnit.MINUTES)
-//                .build(new CacheLoader<>() {
-//                    @Override
-//                    public String load(String s) {
-//                        return "";
-//                    }
-//                });
-//    }
-//
-//    public String generateOtp(String phoneNo){
-//        PhoneNumber to = new PhoneNumber(phoneNo);
-//        PhoneNumber from = new PhoneNumber(twilioConfig.getTrialNumber());
-//        String otp = getRandomOTP(phoneNo);
-//        String otpMessage = "Dear Customer , Your OTP is " + otp + ". Use this otp to log in to Rapido Clone Application";
-//        Message message = Message
-//                .creator(to, from,
-//                        otpMessage)
-//                .create();
-//        return  otp;
-//    }
-//
-//    private String getRandomOTP(String phoneNo) {
-//        String otp =  new DecimalFormat("000000")
-//                .format(new Random().nextInt(999999));
-//        otpCache.put(phoneNo,otp);
-//        return otp;
-//    }
-//    //get saved otp
-//    public String getCacheOtp(String key){
-//        try{
-//            return otpCache.get(key);
-//        }catch (Exception e){
-//            return "";
-//        }
-//    }
-//    //clear stored otp
-//    public void clearOtp(String key){
-//        otpCache.invalidate(key);
-//    }
-//}
+package com.userRegistration.eCommerce.service;
+
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.userRegistration.eCommerce.dao.UserDao;
+import com.userRegistration.eCommerce.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Random;
+
+public class OtpService {
+    @Autowired
+    private UserDao userDao;
+
+    public String generateOtp(String phoneNumber) {
+        // Generate a random 4-digit number for OTP
+        String otp = String.format("%04d", new Random().nextInt(10000));
+
+        // Save the OTP to the User entity
+        User user = userDao.findByPhoneNumber(phoneNumber);
+        user.setOtp(otp);
+        userDao.save(user);
+
+        return otp;
+    }
+    public static final String ACCOUNT_SID = "AC1285e34e7466cf07959fde500aafe1e6";
+    public static final String AUTH_TOKEN = "82dd2909be4a5f0114f1d555a20976fb";
+    public void sendSms (String phoneNumber, String message){
+        try {
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            Message.creator(
+                    new com.twilio.type.PhoneNumber(phoneNumber),
+                    new com.twilio.type.PhoneNumber("+13156311494"),
+                    message
+            ).create();
+        } catch (Exception e) {
+            // Handle any exceptions related to sending the SMS
+            e.printStackTrace();
+        }
+    }
+
+}

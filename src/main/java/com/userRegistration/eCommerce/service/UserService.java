@@ -5,12 +5,16 @@
     import com.userRegistration.eCommerce.entity.Role;
     import com.userRegistration.eCommerce.entity.User;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.security.core.userdetails.UsernameNotFoundException;
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
     import org.springframework.util.StringUtils;
 
 
+    import java.util.ArrayList;
     import java.util.HashSet;
+
 
     import java.util.Set;
     import java.util.regex.Matcher;
@@ -25,6 +29,20 @@
         private RoleDao roleDao;
         @Autowired
         private PasswordEncoder passwordEncoder;
+
+
+
+
+        public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
+            User user = userDao.findByUserName(phoneNumber);
+            if(user==null){
+                user = new User();
+                user.setUserName(phoneNumber);
+                userDao.save(user);
+            }
+            return new org.springframework.security.core.userdetails.User(user.getUserName(), "",
+                    new ArrayList<>());
+        }
 
 
         public User registerNewUser(User user){
